@@ -23,7 +23,7 @@ private func expecting(name: String = #function,
 public extension Publisher where Self.Failure: Error {
     func shouldFail<T: Error & Equatable>(with expectedError: T,
                                           _ execute: (() -> Void)? = nil,
-                                          file: String = #file,
+                                          file: FileString = #file,
                                           line: UInt = #line) -> CombineExpectation {
         expecting { expectation in
             sink(receiveCompletion: { complete in
@@ -40,7 +40,7 @@ public extension Publisher where Self.Failure: Error {
 }
 public extension Publisher where Self.Output: Equatable {
     func shouldFinish(expectedValue: Output,
-                      file: String = #file,
+                      file: FileString = #file,
                       line: UInt = #line) -> CombineExpectation {
         expecting { expectation in
             sink {
@@ -78,7 +78,7 @@ public extension Publisher {
             }, receiveValue: shouldNotBeCalled(_:))
         }
     }
-    func shouldReceive(file: String = #file,
+    func shouldReceive(file: FileString = #file,
                        line: UInt = #line) -> CombineExpectation where Output == Void {
         expecting { expectation in
             sink(receiveCompletion: shouldNotBeCalled(_:)) { value in
@@ -103,7 +103,7 @@ public extension Publisher {
         }
     }
     func shouldFinish(afterReceiving: @escaping (Output) -> Void,
-                      file: String = #file,
+                      file: FileString = #file,
                       line: UInt = #line) -> CombineExpectation {
         expecting { expectation in
             sink(receiveCompletion: {

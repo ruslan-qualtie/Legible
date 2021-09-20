@@ -1,6 +1,7 @@
 import Quick
 import Nimble
 import SwiftUI
+import XCTest
 
 public class SnapshotConfiguration {
     static public var usedSnapshots = [URL]()
@@ -28,7 +29,9 @@ public class MatchingSnapshot: Behavior<Snapshotting> {
         var size: NSSize!
         let snapshotting: Snapshotting = aContext()
         beforeEach {
-            let exampleFileUrl = URL(fileURLWithPath: $0.example.callsite.file)
+            let exampleFileUrl = URL(fileURLWithPath: $0.example.callsite.file.withUTF8Buffer {
+                String(decoding: $0, as: UTF8.self)
+            })
             snapshotUrl = Self.configuration
                 .folderUrl(testFile: exampleFileUrl)
                 .appendingPathComponent(snapshotting.name)
